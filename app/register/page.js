@@ -1,17 +1,15 @@
-// "use client";
+"use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { registerUSer } from "../actions/userActions";
 
 export default function RegisterPage() {
-  async function registerUSer(formData) {
-    "use server";
-    console.log("Form Data : ", formData);
-    console.log("name : ", formData.get("name"));
-    console.log("email : ", formData.get("email"));
-    console.log("password : ", formData.get("password"));
-
-    return { message: "Success" };
-  }
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div className="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6">
@@ -22,8 +20,7 @@ export default function RegisterPage() {
           </h1>
         </header>
         <h2 className="text-2xl font-semibold mb-4">Register</h2>
-        {/* <form action={registerUSer} className="space-y-4"> */}
-        <form className="space-y-4">
+        <form action={registerUSer} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Name
@@ -32,8 +29,8 @@ export default function RegisterPage() {
               type="text"
               name="name"
               className="mt-1 w-full px-4 py-2 border rounded-md bg-white dark:bg-gray-900 dark:text-white"
-              value="Majoka"
-              readOnly
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
@@ -45,8 +42,8 @@ export default function RegisterPage() {
               type="email"
               name="email"
               className="mt-1 w-full px-4 py-2 border rounded-md bg-white dark:bg-gray-900 dark:text-white"
-              value="majoka@gmail.com"
-              readOnly
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -58,14 +55,13 @@ export default function RegisterPage() {
               type="password"
               name="password"
               className="mt-1 w-full px-4 py-2 border rounded-md bg-white dark:bg-gray-900 dark:text-white"
-              value="1234"
-              readOnly
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <button
             type="submit"
-            formAction={registerUSer}
             className="w-full bg-linear-to-r from-blue-500 to-purple-600 text-white py-2 rounded-md font-medium hover:opacity-90"
           >
             Register
