@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { registerUSer } from "../actions/userActions";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [state, formAction, isPending] = useActionState(registerUSer, {});
+  console.log("state : ", state);
+  console.log("isPending : ", isPending);
+  const [name, setName] = useState("Majoka");
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("1234");
 
   return (
     <div className="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6">
@@ -20,7 +23,7 @@ export default function RegisterPage() {
           </h1>
         </header>
         <h2 className="text-2xl font-semibold mb-4">Register</h2>
-        <form action={registerUSer} className="space-y-4">
+        <form action={formAction} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Name
@@ -60,9 +63,12 @@ export default function RegisterPage() {
               required
             />
           </div>
+          <p className="text-sm text-green-500">{state.message}</p>
+          <p className="text-sm text-red-500">{state.error}</p>
           <button
             type="submit"
-            className="w-full bg-linear-to-r from-blue-500 to-purple-600 text-white py-2 rounded-md font-medium hover:opacity-90"
+            className="w-full bg-linear-to-r from-blue-500 to-purple-600 text-white py-2 rounded-md font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled={isPending}
           >
             Register
           </button>
